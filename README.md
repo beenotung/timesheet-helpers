@@ -24,7 +24,10 @@ You can also install `timesheet-helpers` with [pnpm](https://pnpm.io/), [yarn](h
 
 ## Usage Example
 
-Convert from `res/log-sheet.csv` to `res/summary.csv`
+Convert from `res/log-sheet.csv` to summary files in `res/summary/` directory:
+
+- `Task.all.csv`, `Task.2024.csv`, `Task.2025.csv` (and more years)
+- `Tag.all.csv`, `Tag.2024.csv`, `Tag.2025.csv` (and more years)
 
 ```bash
 npx ts-node summarize
