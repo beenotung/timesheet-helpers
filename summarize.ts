@@ -1,5 +1,6 @@
 import { readCSV, writeCSV } from './fs'
 import { summary_file, log_sheet_file } from './config'
+import { mapTag } from './category'
 
 /**
  * Example Input Content (from res/log-sheet.csv):
@@ -30,6 +31,7 @@ for (let row of rows) {
     .split('\n')
     .map(line => line.match(/^(\w+): /)?.[1]?.trim()!)
     .filter(tag => tag)
+    .map(mapTag)
 
   if (tags.length == 0 && remark.toLowerCase().includes('setup ')) {
     tags.push('devop')
