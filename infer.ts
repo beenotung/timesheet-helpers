@@ -111,10 +111,13 @@ for (let row of rows) {
   let words = extract_words(remark)
 
   for (let word of words) {
-    let word_entry = word_entries[word] || {
-      word,
-      total_occurrence: 0,
-      tasks: {},
+    let word_entry = word_entries[word]
+    if (!word_entries.hasOwnProperty(word)) {
+      word_entry = {
+        word,
+        total_occurrence: 0,
+        tasks: {},
+      }
     }
 
     word_entry.total_occurrence++
