@@ -155,7 +155,7 @@ for (let row of rows) {
   let totalTaskOccurrences = Object.values(word_entries).reduce(
     (acc, entry) =>
       acc + Object.values(entry.tasks).reduce((sum, occ) => sum + occ, 0),
-    0
+    0,
   )
 
   // Adjust scores based on overall task occurrences
@@ -163,7 +163,7 @@ for (let row of rows) {
   for (let [taskName, score] of Object.entries(taskScores)) {
     let taskTotalOccurrences = Object.values(word_entries).reduce(
       (sum, entry) => sum + (entry.tasks[taskName] || 0),
-      0
+      0,
     )
 
     let inverseFrequencyWeight =
@@ -174,7 +174,7 @@ for (let row of rows) {
   // Normalize probabilities to sum to 1
   let totalProbability = Object.values(taskProbabilities).reduce(
     (sum, prob) => sum + prob,
-    0
+    0,
   )
   if (totalProbability > 0) {
     for (let taskName in taskProbabilities) {
@@ -185,7 +185,7 @@ for (let row of rows) {
   // Log tasks with their calculated probabilities
   console.log('Probable tasks for remark:', remark)
   let sortedTasks = Object.entries(taskProbabilities).sort(
-    ([taskA, probA], [taskB, probB]) => probB - probA
+    ([taskA, probA], [taskB, probB]) => probB - probA,
   )
 
   // Filter to show top 5 tasks or those with at least 5% probability
