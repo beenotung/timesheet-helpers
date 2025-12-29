@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+/* Disable selection globally */
+table {
+  user-select: none;
+}
+
+/* Re‑enable for first column but we will override with JS */
+td:first-child, th:first-child {
+  user-select: none;
+  cursor: pointer;
+  background-color: #fafafa;
+  transition: background-color 0.2s ease;
+}
+
+td:first-child:hover, th:first-child:hover {
+  background-color: #e9e9e9;
+}
+
+/* Visual feedback for selected cells */
+td.selected, th.selected {
+  background-color: #007bff !important;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<h2>HTML Table (Click or Drag to Select Whole Cells)</h2>
+<p>💡 Click to select one. Drag to select multiple — no partial text!</p>
+
+<table>
+  <tr>
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+  </tr>
+  <tr>
+    <td>Ernst Handel</td>
+    <td>Roland Mendel</td>
+    <td>Austria</td>
+  </tr>
+  <tr>
+    <td>Island Trading</td>
+    <td>Helen Bennett</td>
+    <td>UK</td>
+  </tr>
+  <tr>
+    <td>Laughing Bacchus Winecellars</td>
+    <td>Yoshi Tannamuri</td>
+    <td>Canada</td>
+  </tr>
+  <tr>
+    <td>Magazzini Alimentari Riuniti</td>
+    <td>Giovanni Rovelli</td>
+    <td>Italy</td>
+  </tr>
+</table>
+
+<script>
+const cells = document.querySelectorAll("td:first-child, th:first-child");
+let isSelecting = false;
+let selectedCells = new Set();
+
+function clearSelection() {
+  selectedCells.forEach(cell => cell.classList.remove("selected"));
+  selectedCells.clear();
+}
+
+function updateClipboardText() {
+  const text = Array.from(selectedCells).map(c => c.textContent.trim()).join("\n");
+  navigator.clipboard.writeText(text).catch(() => {});
+}
+
+cells.forEach(cell => {
+  // Clicking just this cell
+  cell.addEventListener("click", e => {
+    if (isSelecting) return;
+    clearSelection();
+    cell.classList.add("selected");
+    selectedCells.add(cell);
+    updateClipboardText();
+  });
+
+  // Start of drag
+  cell.addEventListener("mousedown", e => {
+    isSelecting = true;
+    clearSelection();
+    cell.classList.add("selected");
+    selectedCells.add(cell);
+    e.preventDefault();
+  });
+
+  // Drag over others
+  cell.addEventListener("mouseenter", e => {
+    if (!isSelecting) return;
+    cell.classList.add("selected");
+    selectedCells.add(cell);
+  });
+});
+
+document.addEventListener("mouseup", () => {
+  if (isSelecting) {
+    isSelecting = false;
+    updateClipboardText();
+  }
+});
+
+// Prevent default text selection behavior
+document.addEventListener("selectstart", e => {
+  if (isSelecting) e.preventDefault();
+});
+</script>
+
+</body>
+</html>
